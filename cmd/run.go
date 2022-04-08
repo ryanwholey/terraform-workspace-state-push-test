@@ -13,18 +13,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// var organization string = "takescoop"
-var organization string = "ryanwholey"
-
 func Execute() {
 	cmd := &cobra.Command{
-		Use:   "push-state",
+		Use:   "terrafrom-copy-state",
 		Short: "Transfer state between Terraform Cloud backends",
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
 			flags := cmd.Flags()
+
+			organization, err := flags.GetString("organization")
+			if err != nil {
+				return fmt.Errorf("error parsing organization flag: %w", err)
+			}
+
+			if organization == "" {
+				return fmt.Errorf("--organization,-o required")
+			}
 
 			srcName := args[0]
 
@@ -102,6 +108,7 @@ func Execute() {
 	flags.StringP("destination", "d", "", "Destination workspace name. If not provided, source workspace name will be used")
 	flags.String("source-address", "https://app.terraform.io", "Source host")
 	flags.String("destination-address", "https://app.terraform.io", "Destination host")
+	flags.StringP("organization", "o", "", "Terraform Cloud organization")
 
 	cobra.CheckErr(cmd.Execute())
 }

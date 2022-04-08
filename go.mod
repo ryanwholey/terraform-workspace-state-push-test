@@ -1,4 +1,4 @@
-module github.com/takescoop/push-state
+module github.com/takescoop/terraform-copy-state
 
 go 1.18
 
