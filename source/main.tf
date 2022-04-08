@@ -9,7 +9,7 @@ terraform {
 }
 
 output "foo" {
-  value = random_pet.foo.value
+  value = random_pet.foo.id
 }
 
 output "bar" {
